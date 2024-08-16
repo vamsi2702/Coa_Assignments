@@ -1,5 +1,5 @@
 #include <iostream>
-#include <chrono>
+#include <ctime>
 #include <vector>
 
 using namespace std;
@@ -42,37 +42,37 @@ void list_fibonacci_memo_loop(int n) {
 }
 
 void measure_time_and_print_fibonacci(int n) {
-    chrono::steady_clock::time_point start, end;
+    timespec start, end;
     double time_recursive, time_loop, time_memo_recursive, time_memo_loop;
 
-    start = chrono::steady_clock::now();
+    clock_gettime(CLOCK_MONOTONIC, &start);
     for (int i = 0; i < n; i++) {
         cout << fibonacci_recursive(i) << " ";
     }
     cout << endl;
-    end = chrono::steady_clock::now();
-    time_recursive = chrono::duration<double>(end - start).count();
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    time_recursive = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     cout << "Time taken by recursion: " << time_recursive << " seconds" << endl;
 
-    start = chrono::steady_clock::now();
+    clock_gettime(CLOCK_MONOTONIC, &start);
     list_fibonacci_loop(n);
-    end = chrono::steady_clock::now();
-    time_loop = chrono::duration<double>(end - start).count();
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    time_loop = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     cout << "Time taken by loop: " << time_loop << " seconds" << endl;
 
-    start = chrono::steady_clock::now();
+    clock_gettime(CLOCK_MONOTONIC, &start);
     for (int i = 0; i < n; i++) {
         cout << fibonacci_memo_recursive(i) << " ";
     }
     cout << endl;
-    end = chrono::steady_clock::now();
-    time_memo_recursive = chrono::duration<double>(end - start).count();
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    time_memo_recursive = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     cout << "Time taken by recursion with memoization: " << time_memo_recursive << " seconds" << endl;
 
-    start = chrono::steady_clock::now();
+    clock_gettime(CLOCK_MONOTONIC, &start);
     list_fibonacci_memo_loop(n);
-    end = chrono::steady_clock::now();
-    time_memo_loop = chrono::duration<double>(end - start).count();
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    time_memo_loop = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
     cout << "Time taken by loop with memoization: " << time_memo_loop << " seconds" << endl;
 
     cout << "Speedup of loop over recursion: " << time_recursive / time_loop << endl;

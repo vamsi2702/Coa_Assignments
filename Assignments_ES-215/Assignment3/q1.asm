@@ -1,7 +1,7 @@
 .data
-num1:   .word 0x1234   # First 16-bit number (4660)
-num2:   .word 0x00F0   # Second 16-bit number (240)
-result: .word 0       # To store the subtraction result (4660 - 240 = 4420)
+num1:   .word 0x1134   # First 16-bit number is 4404
+num2:   .word 0x11F0   # Second 16-bit number is 4592
+result: .word 0       # To store the subtraction result 
 msg:    .asciiz "Result: " # Message to print before the result
 
 .text
@@ -18,17 +18,12 @@ main:
 
     sw $t2, result      # result = $t2
 
-
-# Printing the result:
-    li $v0, 4           # System call for print_str
-    la $a0, msg         # Load address of msg into $a0
-    syscall             # Make the system call
-
-    # Print the result
-    li $v0, 1           # System call for print_int
-    lw $a0, result      # Load the result into $a0
-    syscall             # Make the system call
-
-    # Exit the program (system call to exit)
-    li $v0, 10          # Load the exit system call code (10) into $v0
-    syscall             # Make the system call to exit
+#printing the result
+    li $v0, 4           
+    la $a0, msg         
+    syscall             
+    li $v0, 1          
+    lw $a0, result      
+    syscall          
+    li $v0, 10          
+    syscall            
